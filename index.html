@@ -4,18 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS Collection - Utsab Adhikari</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-    <nav>
-        <button onclick="loadPage('random')" >I don't know what I am doing here.</button>
+    <nav class="sticky top-0 bg-white p-4 flex gap-4 border-b border-gray-200 w-full z-10">
+        <button onclick="loadPage('home')" class="border border-2 rounded p-2 hover:bg-gray-100 cursor-pointer">Home</button>
+        <button onclick="loadPage('random')" class="border border-2 rounded p-2 hover:bg-gray-100 cursor-pointer">I don't know what I am doing here.</button>
     </nav>
     <div id="content"></div>
 </body>
 <script>
-    async function loadPage(page){
-        const response = await fetch(`./pages/${page}/index.html`);
-        const html = await response.text();
-        document.getElementById('content').innerHTML = html;
-    }
+async function loadPage(page = 'home') {
+  // Remove old CSS link if it exists
+  const oldLink = document.getElementById('page-style');
+  if (oldLink) oldLink.remove();
+
+  // Load the HTML for that page
+  const response = await fetch(`./pages/${page}/index.html`);
+  const html = await response.text();
+  document.getElementById('content').innerHTML = html;
+
+  // Add the page's CSS (if it exists)
+  const cssLink = document.createElement('link');
+  cssLink.rel = 'stylesheet';
+  cssLink.href = `./pages/${page}/${page}.css`;
+  cssLink.id = 'page-style';
+  document.head.appendChild(cssLink);
+
+  localStorage.setItem('page', page);
+}
+
+// Load last visited or home page on startup
+window.onload = () => loadPage(localStorage.getItem('page') || 'home');
 </script>
 </html>
