@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Collection - Utsab Adhikari</title>
+</head>
+<body>
+    <nav>
+        <button onclick="loadPage('random')" >I don't know what I am doing here.</button>
+    </nav>
+    <div id="content"></div>
+</body>
+<script>
+    async function loadPage(page){
+        const response = await fetch(`./pages/${page}/index.html`);
+        const html = await response.text();
+        document.getElementById('content').innerHTML = html;
+    }
+</script>
+</html>
